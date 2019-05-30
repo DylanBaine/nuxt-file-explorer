@@ -47,3 +47,13 @@ export default {
   }
 };
 </script>
+
+<style lang="postcss">
+a {
+  text-decoration: none;
+  @apply text-grey-darkest p-1 w-full rounded;
+}
+a:hover {
+  @apply text-white bg-grey-dark;
+}
+</style>
