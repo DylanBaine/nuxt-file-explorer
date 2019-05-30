@@ -2,7 +2,7 @@
   <ul class="w-full list-reset">
     <li v-for="item in items" :key="item.id" class="w-full">
       <div class="flex p-1">
-        <nuxt-link class="mr-1" :to="`/items/${item.id}`">{{item.name}}</nuxt-link>
+        <nuxt-link class="mr-1" :to="`/${item.id}`">{{item.name}}</nuxt-link>
         <button @click="$store.commit('addingChild', item)">+</button>
       </div>
       <div class="ml-2">
