@@ -1,9 +1,9 @@
 <template>
-  <ul class="w-full list-reset">
+  <ul class="w-full list-reset border-l">
     <li v-for="item in items" :key="item.id" class="w-full">
       <div class="flex p-1">
         <nuxt-link class="mr-1 w-32" :to="`/${item.id}`">{{item.name}}</nuxt-link>
-        <button @click="addingChild(item)">+</button>
+        <button @click="addingChild(item)">&plus;</button>
       </div>
       <div class="ml-2">
         <recursive-list :items="item.children"></recursive-list>
