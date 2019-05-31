@@ -7,16 +7,21 @@
         </h1>
       </header>
       <section class="flex">
-        <article class="w-5/6">
+        <article :class="file.parent_id || file.children.length ? 'w-5/6':'w-full'">
           <textarea
             @change="update"
             class="w-full h-screen rounded p-1 border outline-none focus:border-grey-dark"
             v-model="file.content"
           ></textarea>
         </article>
-        <aside class="w-1/6">
-          <ul>
-            <li v-for="child in file.children" :key="child.id">{{child.name}}</li>
+        <aside v-if="file.parent_id || file.children.length" class="w-1/6 p-2">
+          <ul class="list-reset">
+            <li v-if="file.parent_id">
+              <nuxt-link :to="`/${file.parent_id}`" class="w-full block">&lsaquo; Back To Parent</nuxt-link>
+            </li>
+            <li v-for="child in file.children" :key="child.id">
+              <nuxt-link :to="`/${child.id}`" class="w-full block">{{child.name}}</nuxt-link>
+            </li>
           </ul>
         </aside>
       </section>
