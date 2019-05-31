@@ -110,6 +110,9 @@ export default {
 </script>
 
 <style lang="postcss">
+* {
+  transition: all 0.2s;
+}
 a {
   text-decoration: none;
   @apply text-grey-darkest p-1 w-full rounded;
