@@ -3,7 +3,7 @@
     <li v-for="item in items" :key="item.id" class="w-full">
       <div class="flex p-1">
         <nuxt-link class="mr-1 w-32" :to="`/${item.id}`">{{item.name}}</nuxt-link>
-        <button @click="$store.commit('addingChild', item)">+</button>
+        <button @click="addingChild(item)">+</button>
       </div>
       <div class="ml-2">
         <recursive-list :items="item.children"></recursive-list>
@@ -41,6 +41,11 @@ export default {
       });
       this.newItem = null;
       this.$store.commit("cancelAddingChild", parent);
+      this.$mount();
+    },
+    addingChild(item) {
+      this.$store.commit("addingChild", item);
+      this.$mount();
     }
   }
 };

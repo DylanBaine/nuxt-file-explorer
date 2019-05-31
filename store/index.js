@@ -1,13 +1,38 @@
 export const state = () => {
   return {
-    folders: [],
     flatState: []
   }
 }
 
+const formatItem = (topState, parentArg) => {
+  const parent = { ...parentArg };
+  parent.children = topState.filter(child => child.parent_id == parent.id).map(child => {
+    return formatItem(topState, child);
+  });
+  return parent;
+}
+
+export const getters = {
+  getItemById: state => id => {
+    return state.find(item => item.id == 1);
+  },
+  formattedFromFlatState({ flatState }) {
+    return flatState.filter(item => item.parent_id == false).map(item => {
+      return formatItem(flatState, item);
+    })
+  }
+}
 
 export const mutations = {
-  addItem({ folders, flatState }, payload) {
+  updateItem({ flatState }, item) {
+    var updating = flatState.find(i => i.id == item.id);
+    flatState.splice(
+      flatState.indexOf(updating),
+      1,
+      item
+    )
+  },
+  addItem({ flatState }, payload) {
     const data = {
       id: flatState.length + 1,
       parent_id: false,
@@ -17,9 +42,8 @@ export const mutations = {
       addingChildren: false,
     };
     flatState.push(data);
-    folders.push(data);
   },
-  pushChild({ folders, flatState }, { parent, child }) {
+  pushChild({ flatState }, { parent, child }) {
     const data = {
       id: flatState.length + 1,
       parent_id: parent.id,
@@ -29,12 +53,11 @@ export const mutations = {
       addingChildren: false
     };
     flatState.push(data);
-    parent.children.push(data);
   },
-  addingChild({ folders }, parent) {
+  addingChild(ctx, parent) {
     parent.addingChildren = true;
   },
-  cancelAddingChild({ folders }, parent) {
+  cancelAddingChild(ctx, parent) {
     parent.addingChildren = false;
   }
 }
