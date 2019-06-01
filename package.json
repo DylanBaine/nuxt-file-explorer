@@ -1,7 +1,7 @@
 {
-  "name": "test-nuxt",
+  "name": "YouDM Notes",
   "version": "1.0.0",
-  "description": "My brilliant Nuxt.js project",
+  "description": "Creat notes and have them available offline!",
   "author": "Dylan",
   "private": true,
   "scripts": {

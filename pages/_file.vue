@@ -10,7 +10,12 @@
             type="text"
           >
         </h1>
-        <div class="mb-2 bg-white w-1/3 p-2 rounded shadow" id="toc" v-if="toc" v-html="toc"></div>
+        <div
+          class="mb-2 bg-white w-1/3 p-2 rounded shadow relative z-10"
+          id="toc"
+          v-if="toc"
+          v-html="toc"
+        ></div>
       </header>
       <section class="flex">
         <article :class="file.parent_id || file.children.length ? 'w-5/6':'w-full'">
@@ -65,10 +70,15 @@ export default {
   },
   watch: {
     $route(route) {
-      this.markViewing(route);
+      this.markViewingHash(route);
     }
   },
   computed: {
+    parent() {
+      return this.$store.state.flatState.find(
+        item => item.id == this.file.parent_id
+      );
+    },
     converter() {
       const showdown = require("showdown");
       const converter = new showdown.Converter({
@@ -97,9 +107,9 @@ export default {
           }
           header = header.replace(findHash, "");
           const link = header.toLowerCase().replace(new RegExp(" ", "g"), "");
-          return `<a class="ml-${hashCount}" href="#${link}">${header}</a>`;
+          return `<a class="ml-${hashCount} block" href="#${link}">&middot; ${header}</a>`;
         })
-        .join("<br>");
+        .join("");
     },
     file() {
       const { flatState } = this.$store.state;
@@ -112,7 +122,10 @@ export default {
     }
   },
   updated() {
-    this.markViewing(this.$route);
+    this.markViewingHash(this.$route);
+    if (this.parent) {
+      this.$store.commit("viewingChildren", this.parent);
+    }
   },
   mounted() {
     document.addEventListener("keydown", ({ altKey, key }) => {
@@ -127,7 +140,7 @@ export default {
     });
   },
   methods: {
-    markViewing(route) {
+    markViewingHash(route) {
       const viewing = document.getElementById(route.hash.replace("#", ""));
       if (viewing && route.hash) {
         viewing.classList.add("bg-yellow");
@@ -146,8 +159,8 @@ export default {
 
 <style lang="postcss">
 #content h1,
-h2,
-h3 {
+#content h2,
+#content h3 {
   @apply py-2 border-b-2;
 }
 

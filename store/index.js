@@ -57,7 +57,14 @@ export const mutations = {
   addingChild(ctx, parent) {
     parent.addingChildren = true;
   },
-  cancelAddingChild(ctx, parent) {
-    parent.addingChildren = false;
+  viewingChildren(ctx, parent) {
+    if (parent.viewingChildren === undefined) parent.viewingChildren = false;
+    parent.viewingChildren = !parent.viewingChildren;
+  },
+  cancelAddingChild({ flatState }, parent) {
+    flatState = flatState.map(item => {
+      item.addingChildren = false;
+      return item;
+    });
   }
 }

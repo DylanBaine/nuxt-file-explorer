@@ -14,7 +14,8 @@
           v-model="newfolder"
           @change="pushFolder"
           @blur="addingFolder = false"
-          placeholder="Folder Name..."
+          @keyup.escape="addingFolder = false"
+          placeholder="Folder Name... (esc to cancel)"
           v-if="addingFolder"
         >
       </section>
